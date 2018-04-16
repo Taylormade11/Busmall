@@ -1,3 +1,12 @@
 * {
   background-color: pink;
 }
+
+#logo {
+  height: 240px;
+  width: 360;
+}
+
+h1 {
+  font-size: 6rem;;
+}
