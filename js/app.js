@@ -39,47 +39,47 @@ function Product(filepath, name) {
   this.shownCount = 0;
 }
 
-var starWarsBag = allProducts[0];
-var bananaSlicer = allProducts[1];
-var ipadHolder = allProducts[2];
-var boots = allProducts[3];
-var breakfast = allProducts[4];
-var bubblegum = allProducts[5];
-var chair = allProducts[6];
-var hulhu = allProducts[7];
-var dogDuck = allProducts[8];
-var dragon = allProducts[9];
-var pen = allProducts[10];
-var scissors = allProducts[11];
-var shark = allProducts[12];
-var babysweep = allProducts[13];
-var tauntaun = allProducts[14];
-var unicorn = allProducts[15];
-var usb = allProducts[16];
-var waterCan = allProducts[17];
-var wineGlass = allProducts[18];
-var petSweep = allProducts[19];
-
 var product1 = allProducts[0];
 var product2 = allProducts[0];
 var product3 = allProducts[0];
 
+var currentProducts = [];
+
 function getNewImages() {
-  if (voteCounter < 25) {
+  if (voteCounter < 24) {
     product1 = allProducts[Math.floor(Math.random() * allProducts.length)];
-    imageOne.src = product1.filepath;
-    product1.shownCount ++;
     product2 = allProducts[Math.floor(Math.random() * allProducts.length)];
-    imageTwo.src = product2.filepath;
-    product2.shownCount ++;
     product3 = allProducts[Math.floor(Math.random() * allProducts.length)];
-    imageThree.src = product3.filepath;
-    product3.shownCount ++;
-    voteCounter ++;
+    if (currentProducts.includes(product1) || currentProducts.includes(product2) || currentProducts.includes(product3)) {
+      getNewImages();
+    } else if (product1 !== product2 && product2 !== product3 && product1 !== product3) {
+      imageOne.src = product1.filepath;
+      product1.shownCount ++;
+      currentProducts.splice(0);
+      currentProducts.splice(1);
+      currentProducts.splice(2);
+      currentProducts.push(product1);
+      imageTwo.src = product2.filepath;
+      product2.shownCount ++;
+      currentProducts.push(product2);
+      imageThree.src = product3.filepath;
+      product3.shownCount ++;
+      currentProducts.push(product3);
+      voteCounter ++;
+    }
   } else {
-    alert('Thank you for your feedback! We will do our best to make sure our BusMall best represents our commuters\' needs!');
+    alert('Thank you for your feedback! We will do our best to make sure our BusMall best represents our commuters\' wants & needs!');
+    fillTable();
   }
 }
+var fillTable = function() {
+  for (var i = 0; i < allProducts.length; i ++) {
+    var list = document.getElementById('dataList');
+    var listItem = document.createElement('li');
+    listItem.textContent = allProducts[i].name + ' received ' + allProducts[i].clickNum + ' votes and was shown ' + allProducts[i].shownCount + ' times. ' + allProducts[i].name + ' was chosen ' + (allProducts[i].clickNum/allProducts[i].shownCount * 100).toFixed(2) + ' % of the time.';
+    list.appendChild(listItem);
+  }
+};
 
 buttonOne.addEventListener('click', function(event) {
   product1.clickNum++;

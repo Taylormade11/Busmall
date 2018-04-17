@@ -2,6 +2,10 @@
   background-color: pink;
 }
 
+body {
+  margin: 0px 40px;
+}
+
 #logo {
   height: 150px;
   margin-top: 0px;
@@ -23,20 +27,24 @@ nav {
 }
 
 nav ul {
-  display: inline-block;
   float: right;
   margin-bottom: -25px;
 }
 
 #nav li {
-  display: inline-block;
   float: right;
+  list-style: none;
   padding: 20px 30px;
   font-size: 2rem;
   border: 3px solid black;
   box-sizing: border-box;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
+}
+
+section p {
+  font-size: 30px;
+  text-align: center;
 }
 
 #container {
@@ -64,4 +72,9 @@ footer {
   position: fixed;
   bottom: 0;
   text-align: center;
+}
+
+#dataList {
+  margin: auto;
+  font-size: 1.5rem;
 }
