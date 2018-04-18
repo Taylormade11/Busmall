@@ -85,6 +85,10 @@ var calculatePercentages = function() {
   }
 };
 
+var hideButtons = function () {
+  document.getElementById('buttons').style.display = 'none';
+};
+
 function getNewImages() {
   if (voteCounter < 25) {
     product1 = allProducts[Math.floor(Math.random() * allProducts.length)];
@@ -104,6 +108,7 @@ function getNewImages() {
       product3.shownCount ++;
       currentProducts.push(product3);
       voteCounter ++;
+
     } else if (currentProducts.includes(product1) || currentProducts.includes(product2) || currentProducts.includes(product3) || (product1 === product2 || product2 === product3 || product1 === product3)) {
       getNewImages();
     }
@@ -113,6 +118,7 @@ function getNewImages() {
     calculatePercentages();
     Product.renderVotesBar();
     Product.renderPercentagesPie();
+    hideButtons();
   }
 }
 
