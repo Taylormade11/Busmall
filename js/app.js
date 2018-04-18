@@ -70,9 +70,7 @@ function Product(filepath, name) {
   Product.productPercentages.push(this.percentage);
 }
 
-var product1, product2, product3;
-
-var currentProducts = [];
+var product1, product2, product3, currentProducts =[];
 
 var calculateVotes = function() {
   for (var i = 0; i < Product.productVotes.length; i++) {
@@ -106,7 +104,7 @@ function getNewImages() {
       product3.shownCount ++;
       currentProducts.push(product3);
       voteCounter ++;
-    } else if (currentProducts.includes(product1) || !currentProducts.includes(product2) || !currentProducts.includes(product3) || (product1 === product2 && product2 === product3 && product1 === product3)) {
+    } else if (currentProducts.includes(product1) || currentProducts.includes(product2) || currentProducts.includes(product3) || (product1 === product2 || product2 === product3 || product1 === product3)) {
       getNewImages();
     }
   } else {
@@ -132,7 +130,6 @@ buttonThree.addEventListener('click', function(event) {
   product3.clickNum++;
   getNewImages();
 });
-
 
 Product.renderVotesBar = function() {
   var ctx = document.getElementById('percentageBar');
@@ -170,7 +167,6 @@ Product.renderVotesBar = function() {
     }
   });
 };
-
 
 Product.renderPercentagesPie = function() {
   var ctx = document.getElementById('votePie');
