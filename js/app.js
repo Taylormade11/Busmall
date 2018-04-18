@@ -60,7 +60,6 @@ var allProducts = Product.allProducts || [
 function Product(filepath, name) {
   this.filepath = filepath;
   this.name = name;
-  // this.clickNum = 0;
   this.shownCount= 0;
   this.percentage = 0;
   Product.productNames.push(this.name);
@@ -94,7 +93,6 @@ var hideButtons = function () {
   document.getElementById('buttons').style.display = 'none';
 };
 
-
 var parseTheseVotes = localStorage.getItem('Votes');
 
 function getNewImages() {
@@ -127,13 +125,11 @@ function getNewImages() {
     Product.renderVotesBar();
     Product.renderPercentagesPie();
     hideButtons();
-    console.log(Product.productVotes);
     var totalStorageVotes = function() {
       for (var i = 0; i < Product.productVotes.length; i++) {
         var stringifiedVotes = JSON.stringify(Product.productVotes);
         localStorage.setItem('Votes', stringifiedVotes);
         var parsedVotes = JSON.parse(parseTheseVotes);
-        console.log(parsedVotes);
         Product.productVotes[i] += parsedVotes[i];
       }
     };
@@ -166,7 +162,9 @@ Product.renderVotesBar = function() {
     data: {
       labels: Product.productNames,
       datasets: [{
-        label: ['% of Success'],
+        label: ['Current % of Success From Last 25 Votes'],
+        padding: 20,
+        fontSize: 20,
         data: Product.productPercentages,
         backgroundColor: Product.productColors,
         borderColor: 'rgb( 255, 255, 255, .3)',
@@ -175,6 +173,10 @@ Product.renderVotesBar = function() {
       }]
     },
     options: {
+      title: {
+        padding: 20,
+        fontSize: 20,
+      },
       scales: {
         xAxes: [{
           stacked: false,
@@ -203,7 +205,7 @@ Product.renderPercentagesPie = function() {
     data: {
       labels: Product.productNames,
       datasets: [{
-        label: '# of Votes',
+        label: ['Total # of Votes'],
         data: Product.productVotes,
         backgroundColor: Product.productColors,
         borderColor: 'rgb(255, 255, 255)',
@@ -211,6 +213,14 @@ Product.renderPercentagesPie = function() {
         hoverBackgroundColor: 'rgb(0, 0, 0)',
       }]
     },
+    options: {
+      title: {
+        display: true,
+        text: 'Total # of Votes Per Product',
+        padding: 20,
+        fontSize: 20
+      }
+    }
   });
 };
 
