@@ -137,7 +137,7 @@ buttonThree.addEventListener('click', function(event) {
 
 
 Product.renderVotesBar = function() {
-  var ctx = document.getElementById('voteBar');
+  var ctx = document.getElementById('percentageBar');
 
   new Chart(ctx, {
     type: 'bar',
@@ -148,7 +148,8 @@ Product.renderVotesBar = function() {
         data: Product.productPercentages,
         backgroundColor: Product.productColors,
         borderColor: 'rgb( 255, 255, 255, .3)',
-        borderWidth: 2
+        borderWidth: 2,
+        hoverBackgroundColor: 'rgb(0, 0, 0)',
       }]
     },
     options: {
@@ -156,9 +157,6 @@ Product.renderVotesBar = function() {
         xAxes: [{
           stacked: false,
           beginAtZero: true,
-          scaleLabel: {
-            labelString: 'Month'
-          },
           ticks: {
             stepSize: 1,
             min: 0,
@@ -168,7 +166,6 @@ Product.renderVotesBar = function() {
         yAxes: [{
           ticks: {
             beginAtZero: true,
-            text: 'Results'
           }
         }]
       }
@@ -178,7 +175,7 @@ Product.renderVotesBar = function() {
 
 
 Product.renderPercentagesPie = function() {
-  var ctx = document.getElementById('percentagePie');
+  var ctx = document.getElementById('votePie');
 
   new Chart(ctx, {
     type: 'pie',
@@ -189,19 +186,11 @@ Product.renderPercentagesPie = function() {
         data: Product.productVotes,
         backgroundColor: Product.productColors,
         borderColor: 'rgb(255, 255, 255)',
-        borderWidth: 0
+        borderWidth: 1,
+        hoverBackgroundColor: 'rgb(0, 0, 0)',
       }]
     },
-    options: {
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true,
-            circumferene: .1 * Math.Pi,
-            text: 'Results'
-          }
-        }]
-      }
-    }
   });
 };
+
+getNewImages();
