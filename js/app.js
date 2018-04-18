@@ -85,6 +85,10 @@ var calculatePercentages = function() {
   }
 };
 
+var hideButtons = function () {
+  document.getElementById('buttons').style.display = 'none';
+};
+
 function getNewImages() {
   if (voteCounter < 25) {
     product1 = allProducts[Math.floor(Math.random() * allProducts.length)];
@@ -114,6 +118,7 @@ function getNewImages() {
     calculatePercentages();
     Product.renderVotesBar();
     Product.renderPercentagesPie();
+    hideButtons();
   }
 }
 
