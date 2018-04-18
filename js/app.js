@@ -1,4 +1,4 @@
-'strict';
+'use strict';
 
 var buttonOne = document.getElementById('button1');
 var buttonTwo = document.getElementById('button2');
@@ -8,6 +8,33 @@ var imageTwo = document.getElementById('image2');
 var imageThree = document.getElementById('image3');
 
 var voteCounter = 0;
+
+Product.productNames = [];
+Product.productVotes = [];
+Product.productPercentages = [];
+Product.productColors = [
+  'rgba(145, 198, 75, .4)',
+  'rgba(145,133,187, .4)',
+  'rgba(234,196,22, .4)',
+  'rgba(65,51,202, .4)',
+  'rgba(149,150,183 , .4)',
+  'rgba(108,81,6 , .4)',
+  'rgba(186,233,162, .4)',
+  'rgba(68,35,29, .4)',
+  'rgba(27,7,225, .4)',
+  'rgba(88,210,25, .4)',
+  'rgba(61,21,17, .4)',
+  'rgba(14,221,211, .4)',
+  'rgba(172,65,100 , .4)',
+  'rgba(99,190,229, .4)',
+  'rgba(41,81,38 , .4)',
+  'rgba(228,12,250, .4)',
+  'rgba(126,1,54 , .4)',
+  'rgba(188,244,110, .4)',
+  'rgba(15,129,163, .4)',
+  'rgba(194,247,171, .4)',
+];
+
 
 var allProducts = [
   new Product('imgs/bag.jpg', 'Star Wars Bag'),
@@ -37,22 +64,37 @@ function Product(filepath, name) {
   this.name = name;
   this.clickNum = 0;
   this.shownCount = 0;
+  this.percentage = 0;
+  Product.productNames.push(this.name);
+  Product.productVotes.push(this.shownCount);
+  Product.productPercentages.push(this.percentage);
 }
 
-var product1 = allProducts[0];
-var product2 = allProducts[0];
-var product3 = allProducts[0];
+var product1 = allProducts;
+var product2 = allProducts;
+var product3 = allProducts;
 
 var currentProducts = [];
 
+var calculateVotes = function() {
+  for (var i = 0; i < Product.productVotes.length; i++) {
+    Product.productVotes[i] += allProducts[i].shownCount;
+  }
+};
+
+var calculatePercentages = function() {
+  for (var i = 0; i < allProducts.length; i ++) {
+    var percentage = (allProducts[i].clickNum/allProducts[i].shownCount * 100).toFixed(2);
+    Product.productPercentages[i] += percentage;
+  }
+};
+
 function getNewImages() {
-  if (voteCounter < 24) {
+  if (voteCounter < 25) {
     product1 = allProducts[Math.floor(Math.random() * allProducts.length)];
     product2 = allProducts[Math.floor(Math.random() * allProducts.length)];
     product3 = allProducts[Math.floor(Math.random() * allProducts.length)];
-    if (currentProducts.includes(product1) || currentProducts.includes(product2) || currentProducts.includes(product3)) {
-      getNewImages();
-    } else if (product1 !== product2 && product2 !== product3 && product1 !== product3) {
+    if (!currentProducts.includes(product1) && !currentProducts.includes(product2) && !currentProducts.includes(product3) && (product1 !== product2 && product2 !== product3 && product1 !== product3)) {
       imageOne.src = product1.filepath;
       product1.shownCount ++;
       currentProducts.splice(0);
@@ -66,20 +108,17 @@ function getNewImages() {
       product3.shownCount ++;
       currentProducts.push(product3);
       voteCounter ++;
+    } else if (currentProducts.includes(product1) || !currentProducts.includes(product2) || !currentProducts.includes(product3) || (product1 === product2 && product2 === product3 && product1 === product3)) {
+      getNewImages();
     }
   } else {
     alert('Thank you for your feedback! We will do our best to make sure our BusMall best represents our commuters\' wants & needs!');
-    fillTable();
+    calculateVotes();
+    calculatePercentages();
+    Product.renderVotesBar();
+    Product.renderPercentagesPie();
   }
 }
-var fillTable = function() {
-  for (var i = 0; i < allProducts.length; i ++) {
-    var list = document.getElementById('dataList');
-    var listItem = document.createElement('li');
-    listItem.textContent = allProducts[i].name + ' received ' + allProducts[i].clickNum + ' votes and was shown ' + allProducts[i].shownCount + ' times. ' + allProducts[i].name + ' was chosen ' + (allProducts[i].clickNum/allProducts[i].shownCount * 100).toFixed(2) + ' % of the time.';
-    list.appendChild(listItem);
-  }
-};
 
 buttonOne.addEventListener('click', function(event) {
   product1.clickNum++;
@@ -95,3 +134,74 @@ buttonThree.addEventListener('click', function(event) {
   product3.clickNum++;
   getNewImages();
 });
+
+
+Product.renderVotesBar = function() {
+  var ctx = document.getElementById('voteBar');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: Product.productNames,
+      datasets: [{
+        label: ['% of Success'],
+        data: Product.productPercentages,
+        backgroundColor: Product.productColors,
+        borderColor: 'rgb( 255, 255, 255, .3)',
+        borderWidth: 2
+      }]
+    },
+    options: {
+      scales: {
+        xAxes: [{
+          stacked: false,
+          beginAtZero: true,
+          scaleLabel: {
+            labelString: 'Month'
+          },
+          ticks: {
+            stepSize: 1,
+            min: 0,
+            autoSkip: false
+          }
+        }],
+        yAxes: [{
+          ticks: {
+            beginAtZero: true,
+            text: 'Results'
+          }
+        }]
+      }
+    }
+  });
+};
+
+
+Product.renderPercentagesPie = function() {
+  var ctx = document.getElementById('percentagePie');
+
+  new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: Product.productNames,
+      datasets: [{
+        label: '# of Votes',
+        data: Product.productVotes,
+        backgroundColor: Product.productColors,
+        borderColor: 'rgb(255, 255, 255)',
+        borderWidth: 0
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true,
+            circumferene: .1 * Math.Pi,
+            text: 'Results'
+          }
+        }]
+      }
+    }
+  });
+};
