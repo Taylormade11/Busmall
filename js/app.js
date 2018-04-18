@@ -104,6 +104,7 @@ function getNewImages() {
       product3.shownCount ++;
       currentProducts.push(product3);
       voteCounter ++;
+
     } else if (currentProducts.includes(product1) || currentProducts.includes(product2) || currentProducts.includes(product3) || (product1 === product2 || product2 === product3 || product1 === product3)) {
       getNewImages();
     }
