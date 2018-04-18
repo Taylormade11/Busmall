@@ -70,9 +70,7 @@ function Product(filepath, name) {
   Product.productPercentages.push(this.percentage);
 }
 
-var product1 = allProducts;
-var product2 = allProducts;
-var product3 = allProducts;
+var product1, product2, product3;
 
 var currentProducts = [];
 
