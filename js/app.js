@@ -8,7 +8,6 @@ var imageTwo = document.getElementById('image2');
 var imageThree = document.getElementById('image3');
 
 var voteCounter = 0;
-
 Product.productNames = [];
 Product.productVotes = [];
 Product.productPercentages = [];
@@ -35,8 +34,7 @@ Product.productColors = [
   'rgba(194,247,171, .4)',
 ];
 
-
-var allProducts = [
+var allProducts = Product.allProducts || [
   new Product('imgs/bag.jpg', 'Star Wars Bag'),
   new Product('imgs/banana.jpg', 'Banana Slicer'),
   new Product('imgs/bathroom.jpg', 'IPad Tpee Holder'),
@@ -62,8 +60,7 @@ var allProducts = [
 function Product(filepath, name) {
   this.filepath = filepath;
   this.name = name;
-  this.clickNum = 0;
-  this.shownCount = 0;
+  this.shownCount= 0;
   this.percentage = 0;
   Product.productNames.push(this.name);
   Product.productVotes.push(this.shownCount);
@@ -72,13 +69,20 @@ function Product(filepath, name) {
 
 var product1, product2, product3, currentProducts =[];
 
-var calculateVotes = function() {
+var calculateCurrentVotes = function() {
   for (var i = 0; i < Product.productVotes.length; i++) {
-    Product.productVotes[i] += allProducts[i].shownCount;
+    Product.productVotes[i] += allProducts[i].clickNum;
+
   }
 };
 
-var calculatePercentages = function() {
+var startClickNumFill = function() {
+  for (var i = 0; i < allProducts.length; i++) {
+    allProducts[i].clickNum = 0;
+  }
+};
+
+var calculateCurrentPercentage = function() {
   for (var i = 0; i < allProducts.length; i ++) {
     var percentage = (allProducts[i].clickNum/allProducts[i].shownCount * 100).toFixed(2);
     Product.productPercentages[i] += percentage;
@@ -89,6 +93,8 @@ var hideButtons = function () {
   document.getElementById('buttons').style.display = 'none';
 };
 
+var parseTheseVotes = localStorage.getItem('Votes');
+
 function getNewImages() {
   if (voteCounter < 25) {
     product1 = allProducts[Math.floor(Math.random() * allProducts.length)];
@@ -96,17 +102,17 @@ function getNewImages() {
     product3 = allProducts[Math.floor(Math.random() * allProducts.length)];
     if (!currentProducts.includes(product1) && !currentProducts.includes(product2) && !currentProducts.includes(product3) && (product1 !== product2 && product2 !== product3 && product1 !== product3)) {
       imageOne.src = product1.filepath;
-      product1.shownCount ++;
+      imageTwo.src = product2.filepath;
+      imageThree.src = product3.filepath;
       currentProducts.splice(0);
       currentProducts.splice(1);
       currentProducts.splice(2);
       currentProducts.push(product1);
-      imageTwo.src = product2.filepath;
-      product2.shownCount ++;
       currentProducts.push(product2);
-      imageThree.src = product3.filepath;
-      product3.shownCount ++;
       currentProducts.push(product3);
+      product1.shownCount ++;
+      product2.shownCount ++;
+      product3.shownCount ++;
       voteCounter ++;
 
     } else if (currentProducts.includes(product1) || currentProducts.includes(product2) || currentProducts.includes(product3) || (product1 === product2 || product2 === product3 || product1 === product3)) {
@@ -114,11 +120,22 @@ function getNewImages() {
     }
   } else {
     alert('Thank you for your feedback! We will do our best to make sure our BusMall best represents our commuters\' wants & needs!');
-    calculateVotes();
-    calculatePercentages();
+    calculateCurrentVotes();
+    calculateCurrentPercentage();
     Product.renderVotesBar();
     Product.renderPercentagesPie();
     hideButtons();
+    var totalStorageVotes = function() {
+      for (var i = 0; i < Product.productVotes.length; i++) {
+        var stringifiedVotes = JSON.stringify(Product.productVotes);
+        localStorage.setItem('Votes', stringifiedVotes);
+        var parsedVotes = JSON.parse(parseTheseVotes);
+        Product.productVotes[i] += parsedVotes[i];
+      }
+    };
+    totalStorageVotes();
+    var stringifiedVotes = JSON.stringify(Product.productVotes);
+    localStorage.setItem('Votes', stringifiedVotes);
   }
 }
 
@@ -145,7 +162,9 @@ Product.renderVotesBar = function() {
     data: {
       labels: Product.productNames,
       datasets: [{
-        label: ['% of Success'],
+        label: ['Current % of Success From Last 25 Votes'],
+        padding: 20,
+        fontSize: 20,
         data: Product.productPercentages,
         backgroundColor: Product.productColors,
         borderColor: 'rgb( 255, 255, 255, .3)',
@@ -154,6 +173,10 @@ Product.renderVotesBar = function() {
       }]
     },
     options: {
+      title: {
+        padding: 20,
+        fontSize: 20,
+      },
       scales: {
         xAxes: [{
           stacked: false,
@@ -182,7 +205,7 @@ Product.renderPercentagesPie = function() {
     data: {
       labels: Product.productNames,
       datasets: [{
-        label: '# of Votes',
+        label: ['Total # of Votes'],
         data: Product.productVotes,
         backgroundColor: Product.productColors,
         borderColor: 'rgb(255, 255, 255)',
@@ -190,7 +213,16 @@ Product.renderPercentagesPie = function() {
         hoverBackgroundColor: 'rgb(0, 0, 0)',
       }]
     },
+    options: {
+      title: {
+        display: true,
+        text: 'Total # of Votes Per Product',
+        padding: 20,
+        fontSize: 20
+      }
+    }
   });
 };
 
+startClickNumFill();
 getNewImages();
