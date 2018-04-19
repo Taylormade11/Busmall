@@ -14,7 +14,7 @@ body {
 }
 
 header {
-  background-image: url(https://cdn.pixabay.com/photo/2015/03/26/22/09/city-skyline-693502_1280.jpg);
+  background-image: url("../imgs/seattleCity.jpg");
   background-repeat: no-repeat;
   background-size: 100%;
   background-position-y: 42%;
