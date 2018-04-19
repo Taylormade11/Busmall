@@ -1,14 +1,25 @@
-* {
-  background-color: pink;
+html {
+  background: linear-gradient(to bottom, rgb(177, 101, 101), rgb(184, 231, 253));
+  margin: 0px;
 }
 
 body {
-  margin: 0px 40px;
+  margin: 0px;
 }
 
 #logo {
-  height: 150px;
+  height: 130px;
   margin-top: 0px;
+  background: transparent;
+}
+
+header {
+  background-image: url(https://cdn.pixabay.com/photo/2015/03/26/22/09/city-skyline-693502_1280.jpg);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position-y: 42%;
+  margin: 0px;
+  height: 400px;
 }
 
 h1 {
@@ -20,15 +31,21 @@ h1 {
   margin-top: 0px;
   padding-left: 0px;
   text-align: center;
+  background: transparent;
 }
 
 nav {
   display: inline-block;
+  background: transparent;
 }
 
 nav ul {
   float: right;
   margin-bottom: -25px;
+}
+#nav {
+  background: transparent;
+  padding-left: 200px;
 }
 
 #nav li {
@@ -40,11 +57,16 @@ nav ul {
   box-sizing: border-box;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
+  background: transparent;
 }
 
 section p {
   font-size: 30px;
   text-align: center;
+  margin: 0px 40px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  color: white;
 }
 
 #container {
@@ -78,6 +100,8 @@ button {
 footer {
   bottom: 0;
   text-align: center;
+  margin: 0px 40px;
+  color: black;
 }
 
 #dataList {
@@ -95,6 +119,7 @@ canvas {
 
 #pie {
 display: flex;
+color: black;
 }
 
 figure {

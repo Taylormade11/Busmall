@@ -119,12 +119,12 @@ function getNewImages() {
       getNewImages();
     }
   } else {
+    hideButtons();
     alert('Thank you for your feedback! We will do our best to make sure our BusMall best represents our commuters\' wants & needs!');
     calculateCurrentVotes();
     calculateCurrentPercentage();
-    Product.renderVotesBar();
-    Product.renderPercentagesPie();
-    hideButtons();
+    Product.renderPercentagesBar();
+    Product.renderVotesPie();
     var totalStorageVotes = function() {
       for (var i = 0; i < Product.productVotes.length; i++) {
         var stringifiedVotes = JSON.stringify(Product.productVotes);
@@ -134,8 +134,6 @@ function getNewImages() {
       }
     };
     totalStorageVotes();
-    var stringifiedVotes = JSON.stringify(Product.productVotes);
-    localStorage.setItem('Votes', stringifiedVotes);
   }
 }
 
@@ -154,9 +152,9 @@ buttonThree.addEventListener('click', function(event) {
   getNewImages();
 });
 
-Product.renderVotesBar = function() {
+Product.renderPercentagesBar = function() {
   var ctx = document.getElementById('percentageBar');
-
+  Chart.defaults.global.defaultFontColor = 'black';
   new Chart(ctx, {
     type: 'bar',
     data: {
@@ -197,9 +195,9 @@ Product.renderVotesBar = function() {
   });
 };
 
-Product.renderPercentagesPie = function() {
+Product.renderVotesPie = function() {
   var ctx = document.getElementById('votePie');
-
+  Chart.defaults.global.defaultFontColor = 'black';
   new Chart(ctx, {
     type: 'pie',
     data: {
