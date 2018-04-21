@@ -69,23 +69,17 @@ function Product(filepath, name) {
 
 var product1, product2, product3, currentProducts =[];
 
-var calculateCurrentVotes = function() {
+var calculateVotesAndPercentages = function() {
   for (var i = 0; i < Product.productVotes.length; i++) {
     Product.productVotes[i] += allProducts[i].clickNum;
-
+    var percentage = (allProducts[i].clickNum/allProducts[i].shownCount * 100).toFixed(2);
+    Product.productPercentages[i] += percentage;
   }
 };
 
 var startClickNumFill = function() {
   for (var i = 0; i < allProducts.length; i++) {
     allProducts[i].clickNum = 0;
-  }
-};
-
-var calculateCurrentPercentage = function() {
-  for (var i = 0; i < allProducts.length; i ++) {
-    var percentage = (allProducts[i].clickNum/allProducts[i].shownCount * 100).toFixed(2);
-    Product.productPercentages[i] += percentage;
   }
 };
 
@@ -105,8 +99,8 @@ function getNewImages() {
       imageTwo.src = product2.filepath;
       imageThree.src = product3.filepath;
       currentProducts.splice(0);
-      currentProducts.splice(1);
-      currentProducts.splice(2);
+      currentProducts.splice(0);
+      currentProducts.splice(0);
       currentProducts.push(product1);
       currentProducts.push(product2);
       currentProducts.push(product3);
@@ -121,8 +115,7 @@ function getNewImages() {
   } else {
     hideButtons();
     alert('Thank you for your feedback! We will do our best to make sure our BusMall best represents our commuters\' wants & needs!');
-    calculateCurrentVotes();
-    calculateCurrentPercentage();
+    calculateVotesAndPercentages();
     Product.renderPercentagesBar();
     Product.renderVotesPie();
     var totalStorageVotes = function() {
@@ -137,25 +130,25 @@ function getNewImages() {
   }
 }
 
-buttonOne.addEventListener('click', function(event) {
+buttonOne.addEventListener('click', function(event) { //eslint-disable-line
   product1.clickNum++;
   getNewImages();
 });
 
-buttonTwo.addEventListener('click', function(event) {
+buttonTwo.addEventListener('click', function(event) { //eslint-disable-line
   product2.clickNum++;
   getNewImages();
 });
 
-buttonThree.addEventListener('click', function(event) {
+buttonThree.addEventListener('click', function(event) { // eslint-disable-line
   product3.clickNum++;
   getNewImages();
 });
 
 Product.renderPercentagesBar = function() {
   var ctx = document.getElementById('percentageBar');
-  Chart.defaults.global.defaultFontColor = 'black';
-  new Chart(ctx, {
+  Chart.defaults.global.defaultFontColor = 'black'; //eslint-disable-line
+  new Chart(ctx, { //eslint-disable-line
     type: 'bar',
     data: {
       labels: Product.productNames,
@@ -197,8 +190,8 @@ Product.renderPercentagesBar = function() {
 
 Product.renderVotesPie = function() {
   var ctx = document.getElementById('votePie');
-  Chart.defaults.global.defaultFontColor = 'black';
-  new Chart(ctx, {
+  Chart.defaults.global.defaultFontColor = 'black'; //eslint-disable-line
+  new Chart(ctx, { //eslint-disable-line
     type: 'pie',
     data: {
       labels: Product.productNames,
