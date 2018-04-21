@@ -46,7 +46,6 @@ nav {
 }
 
 nav ul {
-  display: inline-block;
   float: right;
   margin-bottom: -25px;
 }
