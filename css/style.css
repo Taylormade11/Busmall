@@ -40,6 +40,11 @@ nav {
   background: transparent;
 }
 
+#logoHead {
+  display: inline-block;
+  padding-right: 350px;
+}
+
 nav ul {
   display: inline-block;
   float: right;
