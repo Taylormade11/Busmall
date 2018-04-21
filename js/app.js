@@ -105,8 +105,8 @@ function getNewImages() {
       imageTwo.src = product2.filepath;
       imageThree.src = product3.filepath;
       currentProducts.splice(0);
-      currentProducts.splice(1);
-      currentProducts.splice(2);
+      currentProducts.splice(0);
+      currentProducts.splice(0);
       currentProducts.push(product1);
       currentProducts.push(product2);
       currentProducts.push(product3);
