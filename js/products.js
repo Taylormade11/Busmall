@@ -28,6 +28,10 @@ var allProducts = [
   new Product('imgs/pet-sweep.jpg', 'Floor Sweeping Pet Booties'),
 ];
 
+var nonParsedVotes = localStorage.getItem('Votes');
+var parsedVotes = JSON.parse(nonParsedVotes);
+console.log(parsedVotes);
+
 for (var i = 0; i < allProducts.length; i++) {
   var tBody = document.getElementById('tbody');
   var imageTd = document.createElement('td');
@@ -41,5 +45,8 @@ for (var i = 0; i < allProducts.length; i++) {
   var productName = document.createElement('td');
   productName.textContent = allProducts[i].name;
   productRow.appendChild(productName);
+  var productVotes = parsedVotes[i];
+  var productVote = document.createElement('td');
+  productVote.textContent = productVotes || 0;
+  productRow.appendChild(productVote);
 }
-
